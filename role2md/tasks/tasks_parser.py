@@ -3,6 +3,81 @@ import os
 from role2md.entry import Entry
 
 
+def parse_set_fact(line, registered_vars):
+    """ Handle one-lined set_fact declaration
+
+        Retrieves line and check if there is set_fact declaration.
+        If there is one-lined facts they will added to the registered variables.
+        Else will set the needed parameters for multi-line set_fact declaration.
+
+        Args:
+            :param line:  The line to check
+            :param registered_vars: A list to add the facts to
+
+    Returns:
+       Return if multi-lined set_fact processing needed - Boolean.
+       Return the indentation of the multi-lined set_fact if founded.
+    """
+    fact_processing = False
+    tabs_count = 0
+
+    # Search if there is any one line set fact declaration
+    set_fact = re.search("set_fact: .*=.*", line)
+    if set_fact:
+        # Get all values and add them to the registered variables
+        values = line.split(" ")
+        for value in values:
+            if "=" in value:
+                variable = value.split("=")[0]
+                registered_vars.append(variable)
+    else:
+        # Check if there is any set fact declaration
+        set_fact = re.search("set_fact:", line)
+        if set_fact:
+            # Set values to start multi-line fact declaration
+            fact_processing = True
+            tabs_count = line.find("set_fact:")
+
+    return fact_processing, tabs_count
+
+
+def parse_fact_ml(line, registered_vars, tabs_count):
+    """ Handle multi-lined set_fact declaration
+
+    Retrieves line and check if there is fact declaration.
+    If there is multi-lined facts they will added to the registered variables.
+
+    Args:
+        :param line:  The line to check
+        :param registered_vars: A list to add the facts to
+        :param tabs_count: the indentation of the multi-lined set_fact.
+
+    Returns:
+       Return if multi-lined set_fact processing needed - Boolean.
+    """
+    # Process multi-lined fact declarations
+    fact_processing = True
+
+    # Get the current indentation to check if set_fact finished
+    curr_tabs = re.search("[ ]*", line).end()
+    if tabs_count < curr_tabs:
+        # Search for fact name
+        fact = re.search(".*:", line)
+        if fact:
+            # Add fact to registered variables
+            registered_vars.append(fact.group()[:-1].strip())
+        else:
+            # Finish the fact processing
+            fact_processing = False
+            tabs_count = 0
+    else:
+        # Finish the fact processing
+        fact_processing = False
+        tabs_count = 0
+
+    return fact_processing
+
+
 def parse_used_variable(used_var):
     """ Parse ansible variable that in use.
 
@@ -52,12 +127,19 @@ def parse_tasks(file_path, table, recursive=False):
     scanned_files = [file_path]
     registered_vars = []
     sub_task = None
+    set_fact = None
+    tabs_count = 0
+    fact_processing = False
 
     lines = [line.rstrip('\n') for line in open(file_path)]
 
     # Run on each line in the task
     for line in lines:
         vars_check = True
+
+        # Process multi-line fact declaration
+        if fact_processing:
+            fact_processing = parse_fact_ml(line, registered_vars, tabs_count)
 
         # check if there is register declaration
         register = re.search("register: .*", line)
@@ -81,7 +163,13 @@ def parse_tasks(file_path, table, recursive=False):
                 registered_vars += reg_vars
             else:
                 print("The file {} did not found.".format(sub_task_path))
+            vars_check = False
+
         elif vars_check:
+            # Process set_fact variable
+            if not fact_processing:
+                # Parse the one line fact
+                fact_processing, tabs_count = parse_set_fact(line, registered_vars)
             # Check if there is a variable used in the current line
             match_obj = re.findall("{{[A-Za-z0-9 -_.|]*}}", line)
             if match_obj:
