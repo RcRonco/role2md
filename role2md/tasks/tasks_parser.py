@@ -163,13 +163,13 @@ def parse_tasks(file_path, table, recursive=False):
                 registered_vars += reg_vars
             else:
                 print("The file {} did not found.".format(sub_task_path))
-            vars_check = False
-
+                vars_check = False
         elif vars_check:
             # Process set_fact variable
             if not fact_processing:
                 # Parse the one line fact
                 fact_processing, tabs_count = parse_set_fact(line, registered_vars)
+
             # Check if there is a variable used in the current line
             match_obj = re.findall("{{[A-Za-z0-9 -_.|]*}}", line)
             if match_obj:
