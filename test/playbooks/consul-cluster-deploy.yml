@@ -1,0 +1,7 @@
+- name: Assemble Consul cluster
+  hosts: cluster_nodes 
+  any_errors_fatal: true
+  become: yes
+  become_user: root
+  roles:
+    - { role: consul-deploy }

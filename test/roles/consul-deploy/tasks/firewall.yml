@@ -1,0 +1,58 @@
+---
+#- name: Install firewall python dependencies
+#  yum:
+#    name: python-firewall
+#    state: present
+#  when: ansible_distribution in ['RedHat', 'CentOS', 'Fedora']
+
+#- name: Install firewall python dependencies
+#  apt:
+#    name: python-firewall
+#    state: present
+#  when: ansible_distribution in ['Debian', 'Ubuntu']
+
+- name: Create rule for Consul HTTP API
+  firewalld:
+    port: "{{ consul_ports['http'] }}/tcp"
+    permanent: true
+    state: enabled
+
+- name: Create rule for Consul HTTPS API
+  firewalld:
+    port: "{{ consul_ports['https'] }}/tcp"
+    permanent: true
+    state: enabled
+  when: consul_tls_enable
+
+- name: Create rule for Consul RPC Server
+  firewalld:
+    port: 8300/tcp
+    permanent: true
+    state: enabled
+
+- name: Create rule for Consul Serf Lan TCP
+  firewalld:
+    port: 8301/tcp
+    permanent: true
+    state: enabled
+
+- name: Create rule for Consul Serf Lan UDP
+  firewalld:
+    port: 8301/udp
+    permanent: true
+    state: enabled
+
+- name: Create rule for Consul Serf Wan TCP
+  firewalld:
+    port: 8302/tcp
+    permanent: true
+    state: enabled
+
+- name: Create rule for Consul Serf Wan UDP
+  firewalld:
+    port: 8302/udp
+    permanent: true
+    state: enabled
+
+- name: Reload firewalld configuration
+  command: "firewall-cmd --reload"

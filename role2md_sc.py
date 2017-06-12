@@ -3,7 +3,6 @@ import os
 import yaml
 import re
 import collections
-from jinja2 import Environment, meta, PackageLoader
 
 
 class Entry:
@@ -20,7 +19,7 @@ class Entry:
         self.m_default = default
 
 
-def table_tomd(table):
+def table_to_md(table):
     if type(table) is None or not table:
         raise Exception("The table is null or empty!")
 
@@ -103,12 +102,7 @@ def parse_tasks(file_path, table, registered_vars=None):
                         table[clean_value] = Entry(clean_value, "Yes", "-")
 
 
-def parse_templates(file_path, table, registered_vars=None):
-    return None
-
-
 def main(argv):
-    # "test/roles/consul-deploy"
     root_dir = argv[0]
     table = {}
 
@@ -125,7 +119,7 @@ def main(argv):
             for file in files:
                 print("Else: " + os.path.join(subdir, file))
 
-    md_table = table_tomd(table)
+    md_table = table_to_md(table)
     print(md_table)
 
     return 0

@@ -1,0 +1,10 @@
+---
+- name: Create rule for Vault HTTP API
+  firewalld:
+    port: "{{ vault_port }}/tcp"
+    permanent: true
+    state: enabled
+
+- name: Reload firewalld configuration
+  command: "firewall-cmd --reload"
+

@@ -1,0 +1,53 @@
+---
+# File: defaults/main.yml - Default variables for Consul
+## Core
+consul_version: "{{ lookup('env','CONSUL_VERSION') | default('0.7.5', true) }}"
+consul_os: "{{ ansible_system|lower }}"
+consul_zip_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip"
+consul_checksum_file_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version}}_SHA256SUMS"
+consul_bin_path: "/usr/local/bin"
+consul_config_path: "/etc/consul.d"
+consul_data_path: "/var/consul"
+consul_log_path: "/var/log/consul"
+consul_user: "consul"
+consul_group: "bin"
+consul_group_name: "cluster_nodes"
+consul_datacenter: "co-dc"
+consul_domain: "co"
+consul_log_level: "INFO"
+consul_syslog_enable: true
+consul_iface: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['interface'] }}"
+consul_bind_address: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+consul_dns_bind_address: "127.0.0.1"
+consul_http_bind_address: "0.0.0.0"
+consul_https_bind_address: "0.0.0.0"
+consul_rpc_bind_address: "0.0.0.0"
+consul_node_name: "{{ ansible_nodename }}"
+consul_ports:
+  rpc: 8400
+  http: 8500
+  https: 8533
+  dns: 8600
+
+## ACL
+consul_acl_enable: true
+consul_acl_datacenter: "{{ consul_datacenter }}"
+consul_acl_default_policy: "deny"
+consul_acl_down_policy: "deny"
+consul_acl_master_token_display: false 
+consul_acl_replication_token_display: false 
+
+## TLS
+consul_tls_enable: false 
+consul_src_files: "{{ lookup('env','CONSUL_SRC_FILES') | default(role_path+'/files', true) }}"
+consul_tls_dir: "/etc/consul/ssl"
+consul_ca_crt: "ca.crt"
+consul_server_crt: "server.crt"
+consul_server_key: "server.key"
+consul_copy_keys: true
+consul_verify_incoming: false
+consul_verify_outgoing: true
+consul_verify_server_hostname: false
+
+### Consul
+consul_pkg: "consul_{{ consul_version }}_linux_amd64.zip"

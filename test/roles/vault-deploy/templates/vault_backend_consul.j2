@@ -1,0 +1,10 @@
+{% set _vault_plus_one_port = vault_port | int + 1 | abs %}
+
+backend "consul" {
+  address = "{{ vault_consul }}"
+  path = "{{ vault_cluster_name }}"
+  redirect_addr = "http://{{ vault_redirect_addr }}:{{ vault_port }}"
+  cluster_addr = "http://{{ vault_cluster_address }}:{{ _vault_plus_one_port }}"
+#  disable_clustering = "{{ vault_cluster_disable }}"
+  token = "{{ consul_acl_master_token }}"
+}

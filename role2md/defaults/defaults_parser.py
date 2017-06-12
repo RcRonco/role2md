@@ -4,7 +4,7 @@ from role2md.entry import Entry
 
 def parse_subvariable(key, value, table):
     for subkey, subvalue in value.items():
-        full_key = key + ":" + subkey
+        full_key = "{}:{}".format(key,subkey)
         if full_key in table:
             raise Exception("There are duplications in the variables names.")
         if type(subvalue) is dict:
