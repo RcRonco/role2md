@@ -10,3 +10,8 @@ class Entry:
         self.m_name = name
         self.m_required = required
         self.m_default = default
+
+
+class R2MException(Exception):
+    def __init__(self,*args,**kwargs):
+        Exception.__init__(self,*args,**kwargs)

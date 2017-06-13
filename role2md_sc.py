@@ -4,7 +4,10 @@ import yaml
 import re
 import collections
 
-
+######################### Deprecated #############################
+######################### Deprecated #############################
+######################### Deprecated #############################
+######################### Deprecated #############################
 class Entry:
     m_name = ""
     m_description = "Please fill the description."
