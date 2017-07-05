@@ -11,6 +11,9 @@ def main(argv):
     root_dir = argv[0]
     table = {}
 
+    if not os.path.exists(root_dir):
+        raise Exception("{} does not exists.".format(root_dir))
+
     # Parse all the default files in the role
     if os.path.exists(root_dir + "/defaults"):
         for subdir, dirs, files in os.walk(root_dir + "/defaults"):
@@ -23,7 +26,7 @@ def main(argv):
         scanned_files, registered_vars = parse_tasks((os.path.join(root_dir, "tasks/main.yml")), table, True)
         print("Files scanned:\n\t\t" + '\n\t\t'.join(scanned_files))
     else:
-        raise Exception("task/main.yml does not exists.")
+        raise Exception("{}/task/main.yml does not exists.".format(root_dir))
 
     # Parse all the template files in the role
     if os.path.exists(root_dir + "/templates"):
