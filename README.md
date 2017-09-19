@@ -22,7 +22,7 @@ A python script to generate Markdown table from [Ansible](https://github.com/ans
 2. Install the needed python packages
   
   ``` shell
-  pip3 install -U yaml
+  pip3 install -U pyYAML
   pip3 install -U jinja2
   ```
 3. Add a execution permissions to the script
