@@ -6,6 +6,8 @@ A python script to generate Markdown table from [Ansible](https://github.com/ans
 2. python 3 packages jinja2, yaml.
 
 ## Installation
+The script can be installed with the following steps or with [install.sh](https://github.com/RcRonco/role2md/blob/master/install.sh)
+
 1. Install python 3
 
   ```shell
