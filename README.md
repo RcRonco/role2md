@@ -48,7 +48,7 @@ To run the script all you need is to run the command in this format:
 # Running the script
 ./role2md.py -src=test/nginx -dst=test/README.md -desc="install nginx ansible playbook"
 ```
-Watch the [README](https://github.com/RcRonco/role2md/test/README.md)file generated.
+Watch the [README](https://github.com/RcRonco/role2md/blob/master/test/README.md)file generated.
 
 
 ## Contributing
