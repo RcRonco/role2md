@@ -24,8 +24,7 @@ The script can be installed with the following steps or with [install.sh](https:
 2. Install the needed python packages
   
   ``` shell
-  pip3 install -U pyYAML
-  pip3 install -U jinja2
+  pip3 install -U pyYAML jinja2
   ```
 3. Add a execution permissions to the script
 
