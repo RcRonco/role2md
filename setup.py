@@ -8,5 +8,5 @@ setup(name='role2rdme',
       author_email='cohenronco@gmail.com',
       license='MIT',
       packages=['role2md'],
-      install_requires=['pyYAML', 'jinja2'],
+      install_requires=['pyYaml', 'jinja2'],
       zip_safe=False)
