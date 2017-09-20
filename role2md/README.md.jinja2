@@ -1,0 +1,29 @@
+# {{ role_name }}
+{% if role_description is defined %}
+{{ role_description }}
+{% else %}
+"Please fill description"
+{% endif %}
+## Example
+```yaml
+---
+- name: A playbook example use of {{ role_name }}
+  host: all
+  remote_user: user
+  become: yes
+
+  roles:
+    - {{ role_name }}
+```
+{% if variable_table is defined  %}
+## Variables
+{{ variable_table }}
+{% endif %}
+
+## Contributing
+1. Fork it!
+2. Create your feature branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request :D
+

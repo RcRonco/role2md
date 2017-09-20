@@ -87,11 +87,6 @@ def parse_used_variable(used_var):
     # Check if variable used as dictionary, if yes remove usage
     if clean_var.find("[") != -1:
         clean_var = clean_var.replace("[", ":").replace("]", "").replace("\'", "")
-    # Check if the variable is known ansible/jinja variables
-    if (clean_var == "item" or "lookup(" in clean_var or
-            bool(re.findall("^ansible_.*", clean_var)) or
-            bool(re.findall("^hostvars.*", clean_var))):
-        clean_var = None
 
     return clean_var
 
