@@ -47,7 +47,7 @@ def parse_defaults(file_path, table):
     with open(file_path, "r") as stream:
         try:
             # Parse defaults with yaml parser
-            defaults = yaml.load(stream)
+            defaults = yaml.load(stream) or {}
 
             # Run on each default key
             for key, value in defaults.items():
